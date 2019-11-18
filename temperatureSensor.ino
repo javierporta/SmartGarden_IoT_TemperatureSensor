@@ -26,10 +26,10 @@ char* ssid = "labs";
 char* password = "robot1cA!ESTG";
 
 //API
-String resourceGet = "http://smart-garden-api.azurewebsites.net/api/TemperatureAndHumidity"; 
+String resourceGetTreshold = "http://smart-garden-api.azurewebsites.net/api/TemperatureAndHumidity/treshold"; 
 String resourcePost = "http://smart-garden-api.azurewebsites.net/api/TemperatureAndHumidity?password=bangladesh!123"; 
 
-//For lights
+//For local lights
 int pinHot = 5;
 int pinCold = 2;
 
@@ -37,11 +37,11 @@ EITIWifiClass EITIWiFi;
 
 static uint32_t timer;
 static uint32_t intervalo_tempo_s;
-float threshold_temperature = 1;
+float threshold_temperature = 1; //default
 float current_temperature;
 float last_temperature = -100;
 String jsonGetTemperatureAndHumidity = "";
-float temperatureTreshold =20;
+bool temperatureToBeCold = 15;
 
 void setup()
 {
@@ -99,7 +99,7 @@ void loop()
     Serial.println(" Celsius");
 
     //To show some lights in local environment
-    if (temp>temperatureTreshold) {
+    if (temp > temperatureToBeCold) {
       digitalWrite(pinHot, HIGH);   // turn the LED on (HIGH is the voltage level)
       digitalWrite(pinCold, LOW);
     } 
@@ -117,13 +117,12 @@ void loop()
     //get current temperature from API
 
       //ToDO: Research how to Get this data (tansform void to function to get the json)
-      jsonGetTemperatureAndHumidity = EITIWiFi.httpGet(resourceGet);
-      Serial.println("Json here");
+      threshold_temperature = EITIWiFi.httpGet(resourceGetTreshold).toFloat();
+      Serial.println("Treshold");
       Serial.println(jsonGetTemperatureAndHumidity);
       
 
-       //if (temperatura_atual > (temperatura_anterior + threshold_temperature){
-          //String data = "{\"temperature\": "+ String(3) +", \"humidity\": " + String(4) + "}";
+      if (current_temperature >= (last_temperature + threshold_temperature) || current_temperature <= (last_temperature - threshold_temperature)) {
           String data = "{ \"temperature\": " + String(temp) + ", \"humidity\": " + String(hum) + "}";
           Serial.println("Executing Post");          
           Serial.println("Url");          
@@ -131,8 +130,8 @@ void loop()
           Serial.println("Parameters");
           Serial.println(data);
           EITIWiFi.httpPost(resourcePost, EITIWifi_POST_JSON, data);
-          //temperatura_anterior = temperatura_atual;
-      // }
+          last_temperature = current_temperature;
+     }
        
       //*************************************************
       
