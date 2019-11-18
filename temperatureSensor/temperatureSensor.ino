@@ -26,7 +26,7 @@ char* ssid = "labs";
 char* password = "robot1cA!ESTG";
 
 //API
-String resourceGetTreshold = "http://smart-garden-api.azurewebsites.net/api/TemperatureAndHumidity/treshold"; 
+String resourceGetTreshold = "http://smart-garden-api.azurewebsites.net/api/TemperatureAndHumidity/threshold"; 
 String resourcePost = "http://smart-garden-api.azurewebsites.net/api/TemperatureAndHumidity?password=bangladesh!123"; 
 
 //For local lights
