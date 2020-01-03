@@ -83,7 +83,9 @@ void setup()
 void loop()
 {
     //+++++ envia um pedido a cada INTERVALO_ENVIOS segundos (para não usar a função delay() no loop()) +++++ 
+
   if (micros() - timer >= intervalo_tempo_s) {
+
 
     //+++++ Se a ligação se mantém ativa... faz pedido(s)
     if (WiFi.status() == WL_CONNECTED) {
