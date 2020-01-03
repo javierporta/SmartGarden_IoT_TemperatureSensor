@@ -8,7 +8,7 @@
 #include "EITIWifi.h"        // classe "EITIWifiClass" | Files (.cpp + .h) provided by professor
 
 //Constants
-#define DHTPIN 4     // what pin we're connected to
+#define DHTPIN 4    // what pin we're connected to
 #define DHTTYPE DHT22   // DHT 22  (AM2302)
 #define INTERVALO_ENVIOS    10      // em segundos
 
