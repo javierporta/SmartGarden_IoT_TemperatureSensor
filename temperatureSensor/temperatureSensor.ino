@@ -38,7 +38,6 @@ EITIWifiClass EITIWiFi;
 static uint32_t timer;
 static uint32_t intervalo_tempo_s;
 float threshold_temperature = 1; //default
-float current_temperature;
 float last_temperature = -100;
 String jsonGetTemperatureAndHumidity = "";
 bool temperatureToBeCold = 15;
@@ -124,7 +123,16 @@ void loop()
       Serial.println(jsonGetTemperatureAndHumidity);
       
 
-      if (current_temperature >= (last_temperature + threshold_temperature) || current_temperature <= (last_temperature - threshold_temperature)) {
+Serial.println("current_temperature");
+  Serial.println(temp);
+  Serial.println("Sum");
+  Serial.println(last_temperature + threshold_temperature);
+  Serial.println("rest");
+  Serial.println(last_temperature - threshold_temperature);
+  
+  
+
+      if (temp >= (last_temperature + threshold_temperature) || temp <= (last_temperature - threshold_temperature)) {
           String data = "{ \"temperature\": " + String(temp) + ", \"humidity\": " + String(hum) + "}";
           Serial.println("Executing Post");          
           Serial.println("Url");          
@@ -132,7 +140,7 @@ void loop()
           Serial.println("Parameters");
           Serial.println(data);
           EITIWiFi.httpPost(resourcePost, EITIWifi_POST_JSON, data);
-          last_temperature = current_temperature;
+          last_temperature = temp;
      }
        
       //*************************************************
